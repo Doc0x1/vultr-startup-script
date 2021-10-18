@@ -102,18 +102,20 @@ then
 	echo "\nSSH setup was successful, although with some problems.\n"
 fi
 
-apt-get -y update
-check_errs $? "Failed to apt-get update"
-
-apt-get -y upgrade
-check_errs $? "Failed to apt-get upgrade"
+if command -v "apt-get" > /dev/null 2>&1
+then
+	apt-get -y update
+	check_errs $? "Failed to apt-get update"
+	apt-get -y upgrade
+	check_errs $? "Failed to apt-get upgrade
+fi"
 
 for i in "${install_pkgs[@]}"; do
 	if command -v "$i" > /dev/null 2>&1
 	then
 		printf "%s\n" "$i already installed"
 	else
-		if sudo apt install -y "$i" || sudo pacman -S "$i" || sudo yum install -y "$i" || pkg install "$i"
+		if sudo apt install -y "$i" || sudo pacman -S "$i" || sudo yum install -y "$i"
 		then
 			printf "%s\n" "$i has been installed"
 		else
@@ -137,8 +139,7 @@ check_errs $? "Failed to configure ufw #3"
 ufw allow 9252
 check_errs $? "Failed to configure ufw #4"
 
-ufw enable
-check_errs $? "Failed to configure ufw #5"
+echo "WARNING: You still NEED TO ENABLE UFW!!!"
 
 # Install Docker
 curl -sSL https://get.docker.com/ | sh
