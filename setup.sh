@@ -32,7 +32,12 @@ Host gitlab.com
 
 ERRORS=0
 
-install_pkgs=$PKGS
+install_pkgs=()
+
+for i in "${PKGS[@]}"
+do
+    install_pkgs+=("$i")
+done
 
 check_errs()
 {
