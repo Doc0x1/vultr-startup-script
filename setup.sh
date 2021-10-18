@@ -140,7 +140,7 @@ check_errs $? "Failed to configure ufw #5"
 curl -sSL https://get.docker.com/ | sh
 check_errs $? "Failed to install docker"
 
-echo "Script finished. Afterwards, you can use `git clone https://DocMemes/Dotfiles.git` if you'd like to switch to using Z-Shell, my repo comes with an install script to set everything up for you."
+echo "Script finished. Afterwards, you can use:\ngit clone https://DocMemes/Dotfiles.git\nif you'd like to switch to using Z-Shell, my repo comes with an install script to set everything up for you."
 
 if [ "${ERRORS}" -eq 0 ]
 then
