@@ -13,8 +13,8 @@ SSHDIR=".ssh"
 USER_SSH_DIR="$HOMEDIR/$SSHDIR"
 SSH_PUB_KEY=${SSH_PUB_KEY}
 
-GITHUB_PUB_KEY=${GITHUB_PUB_KEY}
-GITLAB_PUB_KEY=${GITLAB_PUB_KEY}
+GITHUB_SSH_KEY=${GITHUB_SSH_KEY}
+GITLAB_SSH_KEY=${GITLAB_SSH_KEY}
 
 GIT_CONFIG_FILE=${GIT_CONFIG}
 
@@ -43,13 +43,12 @@ check_errs()
 {
 	if [ "${1}" -ne "0" ]; then
 		echo "ERROR # ${1} : ${2}"
-		((ERRORS+=1))
+		(( ERRORS+=1 ))
 		if [ "$#" -eq 3 ]; then
 			echo "Cleaning file from failed script attempt..."
 			rm -f ${3}
 			check_errs $? "Failed to remove file - ${3}"
 		fi
-
 		exit ${1}
 	fi
 }
@@ -63,39 +62,44 @@ else
 fi
 
 echo $GIT_CONFIG_FILE > "$USER_HOME/.gitconfig"
-check_errs $? "Failed to create $USER_HOME/.gitconfig"
+check_errs $? "Failed to create config file $USER_HOME/.gitconfig"
 
 mkdir -p $USER_SSH_DIR
 check_errs $? "Failed to create directory $USER_SSH_DIR"
+
 chmod 700 $USER_SSH_DIR
-check_errs $? "Failed to change permissions on $USER_SSH_DIR"
+check_errs $? "Failed to change permissions on directory $USER_SSH_DIR"
 
 echo $SSH_PUB_KEY > "$USER_SSH_DIR/authorized_keys"
-check_errs $? "Failed to create authorized_keys file in $USER_SSH_DIR"
+check_errs $? "Failed to create file $USER_SSH_DIR/authorized_keys"
+
 chmod 700 "$USER_SSH_DIR/authorized_keys"
-check_errs $? "Failed to change permissions on $USER_SSH_DIR/authorized_keys"
+check_errs $? "Failed to change permissions on file $USER_SSH_DIR/authorized_keys"
 
 echo $CONFIG_FILE > "$USER_SSH_DIR/config"
-check_errs $? "Failed to create config file in $USER_SSH_DIR"
+check_errs $? "Failed to create config file $USER_SSH_DIR/config"
+
 chmod 700 "$USER_SSH_DIR/config"
-check_errs $? "Failed to change permissions on $USER_SSH_DIR/config" 
+check_errs $? "Failed to change permissions on file $USER_SSH_DIR/config" 
 
-echo $GITHUB_PUB_KEY > "$USER_SSH_DIR/id_github"
+echo $GITHUB_SSH_KEY > "$USER_SSH_DIR/id_github"
 check_errs $? "Failed to create Github key file $USER_SSH_DIR/id_github"
-chmod 700 "$USER_SSH_DIR/id_github"
-check_errs $? "Failed to change permissions on $USER_SSH_DIR/id_github"
 
-echo $GITLAB_PUB_KEY > "$USER_SSH_DIR/id_gitlab"
+chmod 700 "$USER_SSH_DIR/id_github"
+check_errs $? "Failed to change permissions on file $USER_SSH_DIR/id_github"
+
+echo $GITLAB_SSH_KEY > "$USER_SSH_DIR/id_gitlab"
 check_errs $? "Failed to create Gitlab key file $USER_SSH_DIR/id_gitlab"
+
 chmod 700 "$USER_SSH_DIR/id_gitlab"
-check_errs $? "Failed to change permissions on $USER_SSH_DIR/id_gitlab"
+check_errs $? "Failed to change permissions on file $USER_SSH_DIR/id_gitlab"
 
 if [ "${ERRORS}" -eq "0" ]
 then
-	echo "SSH setup successfully."
+	echo "\nSSH setup was successful!\n"
 elif [ "${ERRORS}" < "8" ]
 then
-	echo "SSH setup with some problems."
+	echo "\nSSH setup was successful, although with some problems.\n"
 fi
 
 apt-get -y update
@@ -140,7 +144,8 @@ check_errs $? "Failed to configure ufw #5"
 curl -sSL https://get.docker.com/ | sh
 check_errs $? "Failed to install docker"
 
-echo "Script finished. Afterwards, you can use:\ngit clone https://DocMemes/Dotfiles.git\nif you'd like to switch to using Z-Shell, my repo comes with an install script to set everything up for you."
+echo "Script finished.\n"
+echo "Afterwards, you can use:\ngit clone https://DocMemes/Dotfiles.git\nif you'd like to switch to using Z-Shell, my repo comes with an install script to set everything up for you."
 
 if [ "${ERRORS}" -eq 0 ]
 then
@@ -148,3 +153,4 @@ then
 else
 	echo "Setup wasn't completely successful, but it should have taken care of most of these things for you."
 fi
+
