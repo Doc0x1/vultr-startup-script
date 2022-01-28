@@ -13,9 +13,6 @@ SSHDIR=".ssh"
 USER_SSH_DIR="$HOMEDIR/$SSHDIR"
 SSH_PUB_KEY=${SSH_PUB_KEY}
 
-GITHUB_SSH_KEY=${GITHUB_SSH_KEY}
-GITLAB_SSH_KEY=${GITLAB_SSH_KEY}
-
 GIT_CONFIG_FILE=${GIT_CONFIG}
 
 CONFIG_FILE="# Specify SSH key for each Git website
@@ -81,18 +78,6 @@ check_errs $? "Failed to create config file $USER_SSH_DIR/config"
 
 chmod 700 "$USER_SSH_DIR/config"
 check_errs $? "Failed to change permissions on file $USER_SSH_DIR/config" 
-
-echo $GITHUB_SSH_KEY > "$USER_SSH_DIR/id_github"
-check_errs $? "Failed to create Github key file $USER_SSH_DIR/id_github"
-
-chmod 700 "$USER_SSH_DIR/id_github"
-check_errs $? "Failed to change permissions on file $USER_SSH_DIR/id_github"
-
-echo $GITLAB_SSH_KEY > "$USER_SSH_DIR/id_gitlab"
-check_errs $? "Failed to create Gitlab key file $USER_SSH_DIR/id_gitlab"
-
-chmod 700 "$USER_SSH_DIR/id_gitlab"
-check_errs $? "Failed to change permissions on file $USER_SSH_DIR/id_gitlab"
 
 if [ "${ERRORS}" -eq "0" ]
 then
