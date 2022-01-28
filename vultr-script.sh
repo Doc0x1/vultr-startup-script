@@ -10,12 +10,6 @@ chmod +x $SCRIPT_START_FILE
 # SSH public key for connecting with SSH
 export SSH_PUB_KEY=''
 
-# Github private SSH key for authenticating to Github with SSH
-export GITHUB_SSH_KEY=''
-
-# Gitlab private SSH key for authenticating to Gitlab with SSH
-export GITLAB_SSH_KEY=''
-
 export GIT_CONFIG='[user]
         email = your_email@gmail.com
         name = your_name
